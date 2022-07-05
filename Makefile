@@ -48,10 +48,10 @@ composer-install composer-update composer-require composer-require-dev composer-
 metrics-phpmetrics: CMD=./vendor/bin/phpmetrics --junit=./coverage/junit.xml --report-html=./metrics ./app
 qa-linter: CMD=./vendor/bin/parallel-lint -e php -j 10 --colors ./app ./tests
 qa-phpcsfixer: CMD=./vendor/bin/php-cs-fixer fix --using-cache=no --ansi
-qa-phpstan: CMD=./vendor/bin/phpstan analyse --level 9 --memory-limit 1G ./app ./tests
-tests-infection: CMD=./vendor/bin/infection --threads=4 --coverage=./coverage --log-verbosity=all
-tests-paratest: CMD=./vendor/bin/paratest --parallel-suite --processes=8
-tests-phpunit: CMD=./vendor/bin/phpunit --coverage-text --coverage-xml=./coverage/xml --coverage-html=./coverage/html --log-junit=./coverage/junit.xml
+qa-phpstan: CMD=./vendor/bin/phpstan analyse --level 9 --memory-limit 1G --ansi ./app ./tests
+tests-infection: CMD=./vendor/bin/infection --threads=3 --coverage=./coverage --ansi
+tests-paratest: CMD=php -d pcov.enabled=1 ./vendor/bin/paratest --passthru-php="'-d' 'pcov.enabled=1'" --parallel-suite --processes=8 --coverage-text --coverage-xml=./coverage/xml --coverage-html=./coverage/html --log-junit=./coverage/junit.xml
+tests-phpunit: CMD=./vendor/bin/phpunit --coverage-text --coverage-xml=./coverage/xml --coverage-html=./coverage/html --log-junit=./coverage/junit.xml --coverage-cache .phpunit.cache.coverage
 
 bash qa-linter qa-phpstan qa-phpcsfixer tests-phpunit tests-paratest tests-infection metrics-phpmetrics:
 	${DOCKER_COMPOSE_EXEC} ${CMD}
@@ -61,7 +61,7 @@ bash qa-linter qa-phpstan qa-phpcsfixer tests-phpunit tests-paratest tests-infec
 
 metrics: metrics-phpmetrics ## Generates a report with some metrics
 qa: qa-linter qa-phpcsfixer qa-phpstan ## Checks the source code
-tests: tests-phpunit tests-infection ## Runs the Tests Suites
+tests: tests-paratest tests-infection ## Runs the Tests Suites
 
 # MISCELANEOUS
 
