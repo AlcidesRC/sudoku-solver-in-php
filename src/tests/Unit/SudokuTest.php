@@ -20,7 +20,7 @@ final class SudokuTest extends TestCase
      *
      * @covers \App\Sudoku::findEmptyCell
      * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::isCandidateTaken
+     * @covers \App\Sudoku::getCandidates
      * @covers \App\Sudoku::solve
      * @covers \App\Sudoku::solveRecursively
      *
@@ -206,7 +206,7 @@ final class SudokuTest extends TestCase
      * @covers \App\Exceptions\CannotBeSolvedException::__construct
      * @covers \App\Sudoku::findEmptyCell
      * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::isCandidateTaken
+     * @covers \App\Sudoku::getCandidates
      * @covers \App\Sudoku::solve
      * @covers \App\Sudoku::solveRecursively
      *

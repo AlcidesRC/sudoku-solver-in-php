@@ -122,11 +122,7 @@ final class Sudoku
             return true;
         }
 
-        foreach (self::SUDOKU__VALID_CANDIDATES as $candidate) {
-            if ($this->isCandidateTaken($candidate, $y, $x)) {
-                continue;
-            }
-
+        foreach ($this->getCandidates($y, $x) as $candidate) {
             $this->map[$y][$x] = $candidate;
 
             if ($this->solveRecursively()) {
@@ -137,6 +133,50 @@ final class Sudoku
         }
 
         return false;
+    }
+
+    /**
+     * @return array<int>
+     */
+    private function getCandidates(int $y, int $x): array
+    {
+        $usedInRow = function (int $y): array {
+            return $this->map[$y];
+        };
+
+        $usedInCol = function (int $x): array {
+            $values = [];
+            foreach ($this->map as $row) {
+                $values[] = $row[$x];
+            }
+
+            return $values;
+        };
+
+        $getQuadrantLimits = function (int $index): array {
+            $current = floor($index / self::SUDOKU__QUADRANTS);
+            return self::SUDOKU__RANGES_BY_QUADRANT[$current];
+        };
+
+        $usedInQuadrant = function (int $y, int $x) use ($getQuadrantLimits): array {
+            [$iniY, $endY] = $getQuadrantLimits($y);
+            [$iniX, $endX] = $getQuadrantLimits($x);
+
+            $values = [];
+            foreach (range($iniY, $endY) as $y) {
+                foreach (range($iniX, $endX) as $x) {
+                    $values[] = $this->map[$y][$x];
+                }
+            }
+
+            return $values;
+        };
+
+        $used = array_merge($usedInCol($x), $usedInRow($y), $usedInQuadrant($y, $x));
+        $used = array_filter($used);
+        $used = array_unique($used, SORT_NUMERIC);
+
+        return array_diff(self::SUDOKU__VALID_CANDIDATES, $used);
     }
 
     /**
@@ -155,51 +195,11 @@ final class Sudoku
         return [null, null];
     }
 
-    private function isCandidateTaken(int $candidate, int $y, int $x): bool
-    {
-        $isSelected = function (int $candidate, array $values): bool {
-            return false !== array_search($candidate, $values, true);
-        };
-
-        $isTakenInRow = function (int $candidate, int $y) use ($isSelected): bool {
-            return $isSelected($candidate, $this->map[$y]);
-        };
-
-        $isTakenInCol = function (int $candidate, int $x) use ($isSelected): bool {
-            return $isSelected($candidate, array_column($this->map, $x));
-        };
-
-        $getQuadrantLimits = function (int $index): array {
-            $current = floor($index / self::SUDOKU__QUADRANTS);
-            return self::SUDOKU__RANGES_BY_QUADRANT[$current];
-        };
-
-        $isTakenInQuadrant = function (int $candidate, int $y, int $x) use ($getQuadrantLimits, $isSelected): bool {
-            [$iniY, $endY] = $getQuadrantLimits($y);
-            [$iniX, $endX] = $getQuadrantLimits($x);
-
-            $values = [];
-            foreach (range($iniY, $endY) as $y) {
-                foreach (range($iniX, $endX) as $x) {
-                    $values[] = $this->map[$y][$x];
-                }
-            }
-
-            return $isSelected($candidate, $values);
-        };
-
-        return $isTakenInRow($candidate, $y)
-               || $isTakenInCol($candidate, $x)
-               || $isTakenInQuadrant($candidate, $y, $x);
-    }
-
     private function fillTemplate(string $output): string
     {
         foreach ($this->map as $y => $row) {
             foreach ($row as $x => $value) {
-                $output = strtr($output, [
-                    "{$y}:{$x}" => $value,
-                ]);
+                $output = str_replace("{$y}:{$x}", (string) $value, $output);
             }
         }
 
