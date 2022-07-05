@@ -156,7 +156,7 @@ La aplicación cuenta con un Makefile que contiene todos los comandos útiles pa
 Este comando ejecuta las siguientes herramientas:
 
 - PHP Linter
-- PHP Coding Standar (PHPCS)
+- PHP Coding Standards Fixer (PHP-CS-Fixer)
 - PHP Static Analyser (PHPStan)
 
 ```bash
