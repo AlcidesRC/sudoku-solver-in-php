@@ -19,7 +19,7 @@ final class SudokuTest extends TestCase
      * @param array<int, array<int, int>> $expectedSolution
      *
      * @covers \App\Sudoku::findEmptyCell
-     * @covers \App\Sudoku::hasValidSchema
+     * @covers \App\Sudoku::checkSchema
      * @covers \App\Sudoku::isCandidateTaken
      * @covers \App\Sudoku::solve
      * @covers \App\Sudoku::solveRecursively
@@ -75,7 +75,7 @@ final class SudokuTest extends TestCase
      * @param array<int, array<int, int>> $map
      *
      * @covers \App\Exceptions\WrongSchemaException::__construct
-     * @covers \App\Sudoku::hasValidSchema
+     * @covers \App\Sudoku::checkSchema
      * @covers \App\Sudoku::solve
      *
      * @dataProvider dataProviderSudokuThrowExceptionWithWrongSchema
@@ -205,7 +205,7 @@ final class SudokuTest extends TestCase
      *
      * @covers \App\Exceptions\CannotBeSolvedException::__construct
      * @covers \App\Sudoku::findEmptyCell
-     * @covers \App\Sudoku::hasValidSchema
+     * @covers \App\Sudoku::checkSchema
      * @covers \App\Sudoku::isCandidateTaken
      * @covers \App\Sudoku::solve
      * @covers \App\Sudoku::solveRecursively

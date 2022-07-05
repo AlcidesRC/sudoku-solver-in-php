@@ -7,7 +7,18 @@ use App\Exceptions\WrongSchemaException;
 
 final class Sudoku
 {
-    public const SIZE = 9;
+    private const SUDOKU__SIZE = 9;
+    private const SUDOKU__VALID_CANDIDATES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    private const SUDOKU__EMPTY_CELL = 0;
+    private const SUDOKU__QUADRANTS = 3;
+    private const SUDOKU__RANGES_BY_QUADRANT = [
+        0 => [0, 2],
+        1 => [3, 5],
+        2 => [6, 8],
+    ];
+    private const COLOR_A = 'CA';
+    private const COLOR_B = 'CB';
+    private const COLOR_RESET = 'R';
     private const CLI__COLOR_A = "\033[1;32m";
     private const CLI__COLOR_B = "\033[1;36m";
     private const CLI__RESET = "\033[0m";
@@ -44,9 +55,7 @@ final class Sudoku
      */
     public function solve(array $map): self
     {
-        if (!$this->hasValidSchema($map)) {
-            throw new WrongSchemaException();
-        }
+        $this->checkSchema($map);
 
         $this->map = $map;
 
@@ -60,9 +69,9 @@ final class Sudoku
     public function asCli(): string
     {
         $output = strtr(self::CLI__TEMPLATE, [
-            'CA' => self::CLI__COLOR_A,
-            'CB' => self::CLI__COLOR_B,
-            'R'  => self::CLI__RESET,
+            self::COLOR_A     => self::CLI__COLOR_A,
+            self::COLOR_B     => self::CLI__COLOR_B,
+            self::COLOR_RESET => self::CLI__RESET,
         ]);
 
         return $this->fillTemplate($output);
@@ -71,9 +80,9 @@ final class Sudoku
     public function asHtml(): string
     {
         $output = strtr(self::HTML__TEMPLATE, [
-            'CA' => self::HTML__COLOR_A,
-            'CB' => self::HTML__COLOR_B,
-            'R'  => self::HTML__RESET,
+            self::COLOR_A     => self::HTML__COLOR_A,
+            self::COLOR_B     => self::HTML__COLOR_B,
+            self::COLOR_RESET => self::HTML__RESET,
         ]);
 
         $output = $this->fillTemplate($output);
@@ -84,46 +93,36 @@ final class Sudoku
     /**
      * @param array<int, array<int, int>> $map
      */
-    private function hasValidSchema(array $map): bool
+    private function checkSchema(array $map): void
     {
-        if (self::SIZE !== \count($map)) {
-            return false;
+        if (self::SUDOKU__SIZE !== \count($map)) {
+            throw new WrongSchemaException();
         }
 
-        foreach (range(0, 8) as $y) {
-            if (self::SIZE !== \count($map[$y])) {
-                return false;
+        foreach ($map as $y => $row) {
+            if (self::SUDOKU__SIZE !== \count($row)) {
+                throw new WrongSchemaException();
             }
 
-            foreach (range(0, 8) as $x) {
-                $value = $map[$y][$x];
-
-                if (!\is_int($value)) {
-                    return false;
-                }
-
-                if ($value < 0) {
-                    return false;
-                }
-
-                if ($value > 9) {
-                    return false;
+            foreach ($row as $x => $value) {
+                if (!in_array($value, self::SUDOKU__VALID_CANDIDATES, true)) {
+                    if ($value !== self::SUDOKU__EMPTY_CELL) {
+                        throw new WrongSchemaException();
+                    }
                 }
             }
         }
-
-        return true;
     }
 
     private function solveRecursively(): bool
     {
         [$y, $x] = $this->findEmptyCell();
 
-        if (null === $x || null === $y) {
+        if (is_null($y) || is_null($x)) {
             return true;
         }
 
-        foreach (range(1, 9) as $candidate) {
+        foreach (self::SUDOKU__VALID_CANDIDATES as $candidate) {
             if ($this->isCandidateTaken($candidate, $y, $x)) {
                 continue;
             }
@@ -145,8 +144,8 @@ final class Sudoku
      */
     private function findEmptyCell(): array
     {
-        foreach (range(0, 8) as $y) {
-            $index = array_search(0, $this->map[$y], true);
+        foreach ($this->map as $y => $row) {
+            $index = array_search(self::SUDOKU__EMPTY_CELL, $row, true);
 
             if (false !== $index) {
                 return [$y, $index];
@@ -171,11 +170,8 @@ final class Sudoku
         };
 
         $getQuadrantLimits = function (int $index): array {
-            return match ($index) {
-                0, 1, 2 => [0, 2],
-                3, 4, 5 => [3, 5],
-                default => [6, 8],
-            };
+            $current = floor($index / self::SUDOKU__QUADRANTS);
+            return self::SUDOKU__RANGES_BY_QUADRANT[$current];
         };
 
         $isTakenInQuadrant = function (int $candidate, int $y, int $x) use ($getQuadrantLimits, $isSelected): bool {
@@ -183,8 +179,8 @@ final class Sudoku
             [$iniX, $endX] = $getQuadrantLimits($x);
 
             $values = [];
-            for ($y = $iniY; $y <= $endY; ++$y) {
-                for ($x = $iniX; $x <= $endX; ++$x) {
+            foreach (range($iniY, $endY) as $y) {
+                foreach (range($iniX, $endX) as $x) {
                     $values[] = $this->map[$y][$x];
                 }
             }
@@ -199,9 +195,11 @@ final class Sudoku
 
     private function fillTemplate(string $output): string
     {
-        foreach (range(0, 8) as $y) {
-            foreach (range(0, 8) as $x) {
-                $output = str_replace("{$y}:{$x}", (string) $this->map[$y][$x], $output);
+        foreach ($this->map as $y => $row) {
+            foreach ($row as $x => $value) {
+                $output = strtr($output, [
+                    "{$y}:{$x}" => $value,
+                ]);
             }
         }
 
