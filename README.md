@@ -46,9 +46,11 @@ En [`./cli/example.php`](./cli/example.php) se encuentra un ejemplo de uso media
 demos-sudoku$ make cli
 ```
 
-#### Resultado
+##### Resultado
 
-![thumb](./screenshot-cli.png)
+|  Entrada                         | Resultado                      |
+|:--------------------------------:|:------------------------------:|
+| ![thumb](./screenshot-input.png) | ![thumb](./screenshot-cli.png) |
 
 ### HTML
 
@@ -60,10 +62,11 @@ De manera análoga, en [`./public/index.php`](./public/index.php) se encuentra u
 demo-sudoku$ make html
 ```
 
-#### Resultado
+##### Resultado
 
-![thumb](./screenshot-html.png)
-
+|  Entrada                         | Resultado                       |
+|:--------------------------------:|:-------------------------------:|
+| ![thumb](./screenshot-input.png) | ![thumb](./screenshot-html.png) |
 
 ## Construído con
 

@@ -47,7 +47,7 @@ try {
 
         div#sudoku {
             display: inline-block;
-            font-size: x-large;
+            font-size: 14px;
         }
     </style>
 </head>
