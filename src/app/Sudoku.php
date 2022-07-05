@@ -8,7 +8,6 @@ use App\Exceptions\WrongSchemaException;
 final class Sudoku
 {
     public const SIZE = 9;
-
     private const CLI__COLOR_A = "\033[1;32m";
     private const CLI__COLOR_B = "\033[1;36m";
     private const CLI__RESET = "\033[0m";
@@ -32,7 +31,6 @@ final class Sudoku
 ┃ CA8:0R │ CA8:1R │ CA8:2R ┃ CB8:3R │ CB8:4R │ CB8:5R ┃ CA8:6R │ CA8:7R │ CA8:8R ┃
 ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
 ';
-
     private const HTML__COLOR_A = '<span style="color: lightgreen">';
     private const HTML__COLOR_B = '<span style="color: cyan">';
     private const HTML__RESET = '</span>';
@@ -64,7 +62,7 @@ final class Sudoku
         $output = strtr(self::CLI__TEMPLATE, [
             'CA' => self::CLI__COLOR_A,
             'CB' => self::CLI__COLOR_B,
-            'R' => self::CLI__RESET,
+            'R'  => self::CLI__RESET,
         ]);
 
         return $this->fillTemplate($output);
@@ -75,7 +73,7 @@ final class Sudoku
         $output = strtr(self::HTML__TEMPLATE, [
             'CA' => self::HTML__COLOR_A,
             'CB' => self::HTML__COLOR_B,
-            'R' => self::HTML__RESET,
+            'R'  => self::HTML__RESET,
         ]);
 
         $output = $this->fillTemplate($output);
