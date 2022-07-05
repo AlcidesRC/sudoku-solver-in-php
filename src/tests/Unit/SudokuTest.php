@@ -85,8 +85,7 @@ final class SudokuTest extends TestCase
         $this->expectException(WrongSchemaException::class);
 
         (new Sudoku())
-            ->solve($map)
-        ;
+            ->solve($map);
     }
 
     /**
@@ -218,8 +217,7 @@ final class SudokuTest extends TestCase
         $this->expectException(CannotBeSolvedException::class);
 
         (new Sudoku())
-            ->solve($map)
-        ;
+            ->solve($map);
     }
 
     /**
