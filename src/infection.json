@@ -3,10 +3,14 @@
     "source": {
         "directories": [
             "app",
+            "cli",
             "public"
         ]
     },
-    "timeout": 180,
+    "logs": {
+        "text": "infection.log"
+    },
+    "timeout": 300,
     "phpUnit": {
         "configDir": "."
     },
