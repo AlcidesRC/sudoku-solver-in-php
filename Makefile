@@ -60,7 +60,7 @@ bash qa-linter qa-phpstan qa-phpcsfixer tests-phpunit tests-paratest tests-infec
 # SHORTCUTS
 
 metrics: metrics-phpmetrics ## Generates a report with some metrics
-qa: qa-linter qa-phpcs qa-phpstan ## Checks the source code
+qa: qa-linter qa-phpcsfixer qa-phpstan ## Checks the source code
 tests: tests-phpunit tests-infection ## Runs the Tests Suites
 
 # MISCELANEOUS
