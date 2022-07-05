@@ -86,8 +86,8 @@ Para simplificar la puesta en marcha la aplicación responde por defecto a la UR
 Para instalar esta aplicación basta con clonar el proyecto en local:
 
 ```bash
-$ cd ~ && mkdir -p demos/sudoku
-~demos/sudoku$ git clone https://github.com/AlcidesRC/demo-sudoku
+$ cd ~ && mkdir -p demos/sudoku-solver-in-php
+~demos/sudoku-solver-in-php$ git clone https://github.com/AlcidesRC/sudoku-solver-in-php
 ```
 
 ## Uso
@@ -97,7 +97,7 @@ La aplicación cuenta con un Makefile que contiene todos los comandos útiles pa
 ### Comandos disponibles
 
 ```bash
-~demos/sudoku$ make
+~demos/sudoku-solver-in-php$ make
 
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
@@ -127,63 +127,63 @@ La aplicación cuenta con un Makefile que contiene todos los comandos útiles pa
 ### Construcción del servicio
 
 ```bash
-~demos/sudoku$ make build
+~demos/sudoku-solver-in-php$ make build
 ```
 
 ### Iniciando el servicio
 
 ```bash
-~demos/sudoku$ make up
+~demos/sudoku-solver-in-php$ make up
 ```
 
 ### Instalando las dependencias
 
 ```bash
-~demos/sudoku$ make composer-install
+~demos/sudoku-solver-in-php$ make composer-install
 ```
 
 ### Accediendo al servicio mediante Bash
 
 ```bash
-~demos/sudoku$ make bash
+~demos/sudoku-solver-in-php$ make bash
 ```
 
 ### Análisis de Calidad (Quality Assurance)
 
 Este comando ejecuta las siguientes herramientas:
 
-- PHP Linter 
+- PHP Linter
 - PHP Coding Standar (PHPCS)
 - PHP Static Analyser (PHPStan)
 
 ```bash
-~demos/sudoku$ make qa
+~demos/sudoku-solver-in-php$ make qa
 ```
 
 ### Ejecución de baterías de pruebas
 
 Este comando ejecuta las siguientes herramientas:
 
-- PHP Unit 
+- PHP Unit
 - PHP Coverage (PHPCOV)
 - Infection
 
 ```bash
-~demos/sudoku$ make tests
+~demos/sudoku-solver-in-php$ make tests
 ```
 
-> El informe de cobertura de código se encuentra en `./coverage/html/index.html` 
+> El informe de cobertura de código se encuentra en `./coverage/html/index.html`
 
 ### Generación de métricas
 
 ```bash
-~demos/sudoku$ make metrics
+~demos/sudoku-solver-in-php$ make metrics
 ```
 
-> El informe de métricas de código se encuentra en `./metrics/index.html` 
+> El informe de métricas de código se encuentra en `./metrics/index.html`
 
 ### Parando el servicio
 
 ```bash
-~demos/sudoku$ make down
+~demos/sudoku-solver-in-php$ make down
 ```
