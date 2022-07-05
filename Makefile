@@ -47,7 +47,7 @@ composer-install composer-update composer-require composer-require-dev composer-
 
 metrics-phpmetrics: CMD=./vendor/bin/phpmetrics --junit=./coverage/junit.xml --report-html=./metrics ./app
 qa-linter: CMD=./vendor/bin/parallel-lint -e php -j 10 --colors ./app ./tests
-qa-phpcsfixer: CMD=./vendor/bin/php-cs-fixer fix --using-cache=no --ansi --allow-risky=yes
+qa-phpcsfixer: CMD=./vendor/bin/php-cs-fixer fix --using-cache=no --ansi
 qa-phpstan: CMD=./vendor/bin/phpstan analyse --level 9 --memory-limit 1G ./app ./tests
 tests-infection: CMD=./vendor/bin/infection --threads=4 --coverage=./coverage --log-verbosity=all
 tests-paratest: CMD=./vendor/bin/paratest --parallel-suite --processes=8
