@@ -47,14 +47,13 @@ composer-install composer-update composer-require composer-require-dev composer-
 
 metrics-phpmetrics: CMD=./vendor/bin/phpmetrics --junit=./coverage/junit.xml --report-html=./metrics ./app
 qa-linter: CMD=./vendor/bin/parallel-lint -e php -j 10 --colors ./app ./tests
-qa-phpcbf: CMD=./vendor/bin/phpcbf --no-cache --colors --standard=PSR12 --extensions=php ./app/ ./tests
-qa-phpcs: CMD=./vendor/bin/phpcs --no-cache --colors --standard=PSR12 --extensions=php ./app/ ./tests
+qa-phpcsfixer: CMD=./vendor/bin/php-cs-fixer fix --using-cache=no --ansi --allow-risky=yes
 qa-phpstan: CMD=./vendor/bin/phpstan analyse --level 9 --memory-limit 1G ./app ./tests
 tests-infection: CMD=./vendor/bin/infection --threads=4 --coverage=./coverage --log-verbosity=all
 tests-paratest: CMD=./vendor/bin/paratest --parallel-suite --processes=8
 tests-phpunit: CMD=./vendor/bin/phpunit --coverage-text --coverage-xml=./coverage/xml --coverage-html=./coverage/html --log-junit=./coverage/junit.xml
 
-bash qa-linter qa-phpstan qa-phpcs qa-phpcbf qa-phpcsfixer tests-phpunit tests-paratest tests-infection metrics-phpmetrics:
+bash qa-linter qa-phpstan qa-phpcsfixer tests-phpunit tests-paratest tests-infection metrics-phpmetrics:
 	${DOCKER_COMPOSE_EXEC} ${CMD}
 	@echo ""
 
