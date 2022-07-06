@@ -65,11 +65,11 @@ tests: tests-paratest tests-infection ## Runs the Tests Suites
 
 # MISCELANEOUS
 
-cli: ## Executes the example via CLI
+example-cli: ## Executes the example via CLI
 	${DOCKER_COMPOSE_EXEC} php ./cli/example.php
 	@echo ""
 
-html: ## Executes the example via HTTP
+example-html: ## Executes the example via HTTP
 	@xdg-open http://localhost
 	@echo ""
 
