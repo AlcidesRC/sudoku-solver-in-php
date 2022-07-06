@@ -24,21 +24,19 @@ Esta aplicación está basada en la entrada [Programa JS para resolver sudokus](
 
 Dicha implementación podrá dar como resultado:
 
-- Una excepción de tipo `WrongSchemaException` si el mapa de entrada no cumple con el tamaño correcto, o su contenido es erróneo.
+- Una excepción de tipo `WrongSchemaException` si el mapa de entrada no cumple con el tamaño correcto o bien, contiene símbolos no permitidos.
 
 O bien,
 
 - Una excepción de tipo `CannotBeSolvedException` si el mapa de entrada no cumple con las reglas de los sudokus. Por ejemplo, cuando se introducen números repetidos en la misma fila, columna o área y, por tanto, es imposible de resolver el sudoku.
 
-O bien,
-
-- La solución del sudoku
+Si no se produce ninguna excepción, la clase retornará la solución del sudoku.
 
 Hay dos modos de usar la aplicación:
 
 ### Command Line Interface (CLI)
 
-En [`./cli/example.php`](./cli/example.php) se encuentra un ejemplo de uso mediante la interfaz de línea de comandos.
+En [`./cli/example.php`](https://github.com/AlcidesRC/sudoku-solver-in-php/blob/main/src/cli/example.php) se encuentra un ejemplo de uso mediante la interfaz de línea de comandos.
 
 #### Ejecutar el ejemplo
 
@@ -54,7 +52,7 @@ demos-sudoku$ make cli
 
 ### HTML
 
-De manera análoga, en [`./public/index.php`](./public/index.php) se encuentra un ejemplo de uso mediante HTTP.
+De manera análoga, en [`./public/index.php`](https://github.com/AlcidesRC/sudoku-solver-in-php/blob/main/src/public/index.php) se encuentra un ejemplo de uso mediante HTTP.
 
 #### Ejecutar el ejemplo
 
@@ -183,7 +181,7 @@ Este comando ejecuta las siguientes herramientas:
 ~demos/sudoku-solver-in-php$ make metrics
 ```
 
-> El informe de métricas de código se encuentra en `./metrics/index.html`
+> El informe de métricas se encuentra en `./metrics/index.html`
 
 ### Parando el servicio
 
