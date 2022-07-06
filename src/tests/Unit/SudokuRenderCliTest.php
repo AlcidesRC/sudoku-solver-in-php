@@ -2,9 +2,8 @@
 
 namespace UnitTests;
 
-use App\Exceptions\CannotBeSolvedException;
 use App\Exceptions\WrongSchemaException;
-use App\Sudoku;
+use App\SudokuRenderCli;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,48 +11,38 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversNothing
  */
-final class SudokuTest extends TestCase
+final class SudokuRenderCliTest extends TestCase
 {
     /**
      * @param array<int, array<int, int>> $map
-     * @param array<int, array<int, int>> $expectedSolution
      *
-     * @covers \App\Sudoku::findEmptyCell
-     * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::getCandidates
-     * @covers \App\Sudoku::solve
-     * @covers \App\Sudoku::solveRecursively
+     * @covers \App\SudokuRenderCli::render
+     * @covers \App\SudokuRenderCli::checkSchema
+     * @covers \App\SudokuRenderCli::getTemplate
+     * @covers \App\SudokuRenderCli::getValuesReplacements
      *
-     * @dataProvider dataProviderSudokuHappyPath
+     * @dataProvider dataProviderSudokuSolved
      */
-    public function testHappyPath(array $map, array $expectedSolution): void
+    public function testHappyPath(array $map): void
     {
-        $solution = (new Sudoku())
-            ->solve($map);
+        $output = (new SudokuRenderCli())->render($map);
 
-        static::assertSame($expectedSolution, $solution);
+        static::assertIsString($output);
+        static::assertNotEmpty($output);
+        static::assertStringNotContainsString('CA', $output);
+        static::assertStringNotContainsString('CB', $output);
+        static::assertStringNotContainsString('R', $output);
+        static::assertStringStartsWith(SudokuRenderCli::STARTS_WITH, $output);
+        static::assertStringEndsWith(SudokuRenderCli::ENDS_WITH, $output);
     }
 
     /**
      * @return array<int, array<int, array<int, array<int, int>>>>
      */
-    public function dataProviderSudokuHappyPath(): array
+    public function dataProviderSudokuSolved(): array
     {
         return [
             [
-                [
-                    [8, 0, 0,    0, 0, 0,    0, 0, 0],
-                    [0, 0, 3,    6, 0, 0,    0, 0, 0],
-                    [0, 7, 0,    0, 9, 0,    2, 0, 0],
-
-                    [0, 5, 0,    0, 0, 7,    0, 0, 0],
-                    [0, 0, 0,    0, 4, 5,    7, 0, 0],
-                    [0, 0, 0,    1, 0, 0,    0, 3, 0],
-
-                    [0, 0, 1,    0, 0, 0,    0, 6, 8],
-                    [0, 0, 8,    5, 0, 0,    0, 1, 0],
-                    [0, 9, 0,    0, 0, 0,    4, 0, 0],
-                ],
                 [
                     [8, 1, 2,    7, 5, 3,    6, 4, 9],
                     [9, 4, 3,    6, 8, 2,    1, 7, 5],
@@ -75,8 +64,8 @@ final class SudokuTest extends TestCase
      * @param array<int, array<int, int>> $map
      *
      * @covers \App\Exceptions\WrongSchemaException::__construct
-     * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::solve
+     * @covers \App\SudokuRenderCli::render
+     * @covers \App\SudokuRenderCli::checkSchema
      *
      * @dataProvider dataProviderSudokuThrowExceptionWithWrongSchema
      */
@@ -84,8 +73,8 @@ final class SudokuTest extends TestCase
     {
         $this->expectException(WrongSchemaException::class);
 
-        (new Sudoku())
-            ->solve($map);
+        (new SudokuRenderCli())
+            ->render($map);
     }
 
     /**
@@ -195,50 +184,6 @@ final class SudokuTest extends TestCase
                     [0, 0, 0,    0, 0, 0,    0, 0, 0],
                     [0, 0, 0,    0, 0, 0,    0, 0, 0],
                     [0, 0, 0,    0, 0, 0,    0, 0, 0],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @param array<int, array<int, int>> $map
-     *
-     * @covers \App\Exceptions\CannotBeSolvedException::__construct
-     * @covers \App\Sudoku::findEmptyCell
-     * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::getCandidates
-     * @covers \App\Sudoku::solve
-     * @covers \App\Sudoku::solveRecursively
-     *
-     * @dataProvider dataProviderSudokuThrowExceptionWithWrongContents
-     */
-    public function testThrowExceptionWithWrongContents(array $map): void
-    {
-        $this->expectException(CannotBeSolvedException::class);
-
-        (new Sudoku())
-            ->solve($map);
-    }
-
-    /**
-     * @return array<int, array<int, array<int, array<int, int>>>>
-     */
-    public function dataProviderSudokuThrowExceptionWithWrongContents(): array
-    {
-        return [
-            [
-                [
-                    [8, 8, 8,    0, 0, 0,    0, 0, 0],
-                    [0, 0, 3,    6, 0, 0,    0, 0, 0],
-                    [0, 7, 0,    0, 9, 0,    2, 0, 0],
-
-                    [0, 5, 0,    0, 0, 7,    0, 0, 0],
-                    [0, 0, 0,    0, 4, 5,    7, 0, 0],
-                    [0, 0, 0,    1, 0, 0,    0, 3, 0],
-
-                    [0, 0, 1,    0, 0, 0,    0, 6, 8],
-                    [0, 0, 8,    5, 0, 0,    0, 1, 0],
-                    [0, 9, 0,    0, 0, 0,    4, 0, 0],
                 ],
             ],
         ];

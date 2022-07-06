@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Exceptions\CannotBeSolvedException;
 use App\Exceptions\WrongSchemaException;
 use App\Sudoku;
+use App\SudokuRenderHtml;
 
 $map = [
     [8, 0, 0,    0, 0, 0,    0, 0, 0],
@@ -21,9 +22,8 @@ $map = [
 ];
 
 try {
-    $output = (new Sudoku())
-        ->solve($map)
-        ->asHtml();
+    $solution = (new Sudoku())->solve($map);
+    $output = (new SudokuRenderHtml())->render($solution);
 } catch (CannotBeSolvedException | WrongSchemaException $e) {
     $output = 'Oops [ ' . $e->getMessage() . ' ]';
 }
