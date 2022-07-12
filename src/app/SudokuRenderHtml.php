@@ -4,8 +4,6 @@ namespace App;
 
 final class SudokuRenderHtml extends AbstractSudokuRender
 {
-    public const STARTS_WITH = '<div id="sudoku" style="font-family: monospace">';
-    public const ENDS_WITH = '</div>';
     private const REPLACEMENTS = [
         'CA' => '<span style="color: lightgreen">',
         'CB' => '<span style="color: cyan">',
@@ -15,21 +13,22 @@ final class SudokuRenderHtml extends AbstractSudokuRender
     /**
      * @param array<int, array<int, int>> $map
      */
-    public function render(array $map): string
+    public function __invoke(array $map, ?string $title = ''): string
     {
         $this->checkSchema($map);
 
-        return strtr(self::getTemplate(), self::REPLACEMENTS + self::getValuesReplacements($map));
+        return strtr(self::getTemplate($title), self::REPLACEMENTS + self::getValuesReplacements($map));
     }
 
-    protected static function getTemplate(): string
+    protected static function getTemplate(?string $title = ''): string
     {
         $template = nl2br(implode(PHP_EOL, self::TEMPLATE));
 
         return implode(PHP_EOL, [
-            self::STARTS_WITH,
+            '<figure id="sudoku">',
             $template,
-            self::ENDS_WITH,
+            '<figcaption>' . $title . '</figcaption>',
+            '</figure>',
         ]);
     }
 }

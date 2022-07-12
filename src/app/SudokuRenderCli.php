@@ -4,8 +4,6 @@ namespace App;
 
 final class SudokuRenderCli extends AbstractSudokuRender
 {
-    public const STARTS_WITH = '┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓';
-    public const ENDS_WITH = '┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛';
     private const REPLACEMENTS = [
         'CA' => "\033[1;32m",
         'CB' => "\033[1;36m",
@@ -15,15 +13,19 @@ final class SudokuRenderCli extends AbstractSudokuRender
     /**
      * @param array<int, array<int, int>> $map
      */
-    public function render(array $map): string
+    public function __invoke(array $map, ?string $title = ''): string
     {
         $this->checkSchema($map);
 
-        return strtr(self::getTemplate(), self::REPLACEMENTS + self::getValuesReplacements($map));
+        return strtr(self::getTemplate($title), self::REPLACEMENTS + self::getValuesReplacements($map));
     }
 
-    protected static function getTemplate(): string
+    protected static function getTemplate(?string $title = ''): string
     {
-        return implode(PHP_EOL, self::TEMPLATE);
+        return implode(PHP_EOL, [
+            ...self::TEMPLATE,
+            $title,
+            '',
+        ]);
     }
 }

@@ -4,29 +4,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Exceptions\CannotBeSolvedException;
 use App\Exceptions\WrongSchemaException;
-use App\Sudoku;
+use App\SudokuGenerator;
 use App\SudokuRenderHtml;
+use App\SudokuSolver;
 
-$map = [
-    [8, 0, 0,    0, 0, 0,    0, 0, 0],
-    [0, 0, 3,    6, 0, 0,    0, 0, 0],
-    [0, 7, 0,    0, 9, 0,    2, 0, 0],
-
-    [0, 5, 0,    0, 0, 7,    0, 0, 0],
-    [0, 0, 0,    0, 4, 5,    7, 0, 0],
-    [0, 0, 0,    1, 0, 0,    0, 3, 0],
-
-    [0, 0, 1,    0, 0, 0,    0, 6, 8],
-    [0, 0, 8,    5, 0, 0,    0, 1, 0],
-    [0, 9, 0,    0, 0, 0,    4, 0, 0],
-];
-
-try {
-    $solution = (new Sudoku())->solve($map);
-    $output = (new SudokuRenderHtml())->render($solution);
-} catch (CannotBeSolvedException | WrongSchemaException $e) {
-    $output = 'Oops [ ' . $e->getMessage() . ' ]';
-}
+$renderer = new SudokuRenderHtml();
 
 ?>
 <!DOCTYPE HTML>
@@ -37,6 +19,8 @@ try {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
+    <link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css'>
+
     <style>
         body {
             margin: 0;
@@ -45,15 +29,28 @@ try {
             color: lightgray;
         }
 
-        div#sudoku {
+        figure#sudoku {
             display: inline-block;
-            font-size: 14px;
+            font-size: large;
+            font-family: Hack, monospace;
         }
     </style>
 </head>
 <body>
 
-<?php echo $output ?>
+<?php
+
+try {
+    $map = (new SudokuGenerator())();
+    echo $renderer($map, 'Input');
+
+    $solution = (new SudokuSolver())($map);
+    echo $renderer($solution, 'Solution');
+} catch (CannotBeSolvedException | WrongSchemaException $e) {
+    echo 'Oops [ ' . $e->getMessage() . ' ]';
+}
+
+?>
 
 </body>
 </html>

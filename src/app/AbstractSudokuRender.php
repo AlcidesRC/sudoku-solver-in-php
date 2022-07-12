@@ -27,11 +27,11 @@ abstract class AbstractSudokuRender extends AbstractSudoku
     ];
 
     /**
-     * @param array<int, array<int, int>> $map
+     * @param array<int, array<int, int|string>> $map
      */
-    abstract public function render(array $map): string;
+    abstract public function __invoke(array $map, ?string $title = ''): string;
 
-    abstract protected static function getTemplate(): string;
+    abstract protected static function getTemplate(?string $title = ''): string;
 
     /**
      * @param array<int, array<int, int>> $map
@@ -44,7 +44,9 @@ abstract class AbstractSudokuRender extends AbstractSudoku
 
         foreach ($map as $y => $row) {
             foreach ($row as $x => $value) {
-                $replacements["{$y}:{$x}"] = (string) $value;
+                $replacements["{$y}:{$x}"] = $value === self::EMPTY_CELL_VALUE
+                    ? self::EMPTY_CELL_VALUE_PLACEHOLDER
+                    : (string) $value;
             }
         }
 

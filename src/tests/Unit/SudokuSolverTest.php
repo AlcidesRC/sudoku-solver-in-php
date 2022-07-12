@@ -4,7 +4,7 @@ namespace UnitTests;
 
 use App\Exceptions\CannotBeSolvedException;
 use App\Exceptions\WrongSchemaException;
-use App\Sudoku;
+use App\SudokuSolver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,24 +12,26 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversNothing
  */
-final class SudokuTest extends TestCase
+final class SudokuSolverTest extends TestCase
 {
     /**
-     * @param array<int, array<int, int>> $map
+     * @param array<int, array<int, int|string>> $map
      * @param array<int, array<int, int>> $expectedSolution
      *
-     * @covers \App\Sudoku::findEmptyCell
-     * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::getCandidates
-     * @covers \App\Sudoku::solve
-     * @covers \App\Sudoku::solveRecursively
+     * @covers \App\SudokuSolver::pickFirstEmptyCell
+     * @covers \App\SudokuSolver::checkSchema
+     * @covers \App\SudokuSolver::getCandidates
+     * @covers \App\SudokuSolver::getColValues
+     * @covers \App\SudokuSolver::getRowValues
+     * @covers \App\SudokuSolver::getQuadrantValues
+     * @covers \App\SudokuSolver::__invoke
+     * @covers \App\SudokuSolver::solveRecursively
      *
      * @dataProvider dataProviderSudokuHappyPath
      */
     public function testHappyPath(array $map, array $expectedSolution): void
     {
-        $solution = (new Sudoku())
-            ->solve($map);
+        $solution = (new SudokuSolver())($map);
 
         static::assertSame($expectedSolution, $solution);
     }
@@ -75,8 +77,8 @@ final class SudokuTest extends TestCase
      * @param array<int, array<int, int>> $map
      *
      * @covers \App\Exceptions\WrongSchemaException::__construct
-     * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::solve
+     * @covers \App\SudokuSolver::checkSchema
+     * @covers \App\SudokuSolver::__invoke
      *
      * @dataProvider dataProviderSudokuThrowExceptionWithWrongSchema
      */
@@ -84,8 +86,7 @@ final class SudokuTest extends TestCase
     {
         $this->expectException(WrongSchemaException::class);
 
-        (new Sudoku())
-            ->solve($map);
+        (new SudokuSolver())($map);
     }
 
     /**
@@ -204,11 +205,14 @@ final class SudokuTest extends TestCase
      * @param array<int, array<int, int>> $map
      *
      * @covers \App\Exceptions\CannotBeSolvedException::__construct
-     * @covers \App\Sudoku::findEmptyCell
-     * @covers \App\Sudoku::checkSchema
-     * @covers \App\Sudoku::getCandidates
-     * @covers \App\Sudoku::solve
-     * @covers \App\Sudoku::solveRecursively
+     * @covers \App\SudokuSolver::pickFirstEmptyCell
+     * @covers \App\SudokuSolver::checkSchema
+     * @covers \App\SudokuSolver::getCandidates
+     * @covers \App\SudokuSolver::getColValues
+     * @covers \App\SudokuSolver::getRowValues
+     * @covers \App\SudokuSolver::getQuadrantValues
+     * @covers \App\SudokuSolver::__invoke
+     * @covers \App\SudokuSolver::solveRecursively
      *
      * @dataProvider dataProviderSudokuThrowExceptionWithWrongContents
      */
@@ -216,8 +220,7 @@ final class SudokuTest extends TestCase
     {
         $this->expectException(CannotBeSolvedException::class);
 
-        (new Sudoku())
-            ->solve($map);
+        (new SudokuSolver())($map);
     }
 
     /**

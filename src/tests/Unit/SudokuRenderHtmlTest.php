@@ -16,24 +16,24 @@ final class SudokuRenderHtmlTest extends TestCase
     /**
      * @param array<int, array<int, int>> $map
      *
-     * @covers \App\SudokuRenderHtml::render
+     * @covers \App\SudokuRenderHtml::__invoke
+     * @covers \App\AbstractSudokuRender::__invoke
      * @covers \App\SudokuRenderHtml::checkSchema
      * @covers \App\SudokuRenderHtml::getTemplate
-     * @covers \App\SudokuRenderHtml::getValuesReplacements
+     * @covers \App\AbstractSudokuRender::getTemplate
+     * @covers \App\AbstractSudokuRender::getValuesReplacements
      *
      * @dataProvider dataProviderSudokuSolved
      */
     public function testHappyPath(array $map): void
     {
-        $output = (new SudokuRenderHtml())->render($map);
+        $output = (new SudokuRenderHtml())($map);
 
         static::assertIsString($output);
         static::assertNotEmpty($output);
         static::assertStringNotContainsString('CA', $output);
         static::assertStringNotContainsString('CB', $output);
         static::assertStringNotContainsString('R', $output);
-        static::assertStringStartsWith(SudokuRenderHtml::STARTS_WITH, $output);
-        static::assertStringEndsWith(SudokuRenderHtml::ENDS_WITH, $output);
     }
 
     /**
@@ -56,6 +56,19 @@ final class SudokuRenderHtmlTest extends TestCase
                     [4, 3, 8,    5, 2, 6,    9, 1, 7],
                     [7, 9, 6,    3, 1, 8,    4, 5, 2],
                 ],
+                [
+                    [8, 0, 0,    0, 0, 0,    0, 0, 0],
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+                    [0, 0, 0,    0, 0, 0,    0, 0, 0],
+                ],
             ],
         ];
     }
@@ -64,7 +77,8 @@ final class SudokuRenderHtmlTest extends TestCase
      * @param array<int, array<int, int>> $map
      *
      * @covers \App\Exceptions\WrongSchemaException::__construct
-     * @covers \App\SudokuRenderHtml::render
+     * @covers \App\SudokuRenderHtml::__invoke
+     * @covers \App\AbstractSudokuRender::__invoke
      * @covers \App\SudokuRenderHtml::checkSchema
      *
      * @dataProvider dataProviderSudokuThrowExceptionWithWrongSchema
@@ -73,8 +87,7 @@ final class SudokuRenderHtmlTest extends TestCase
     {
         $this->expectException(WrongSchemaException::class);
 
-        (new SudokuRenderHtml())
-            ->render($map);
+        (new SudokuRenderHtml())($map);
     }
 
     /**
