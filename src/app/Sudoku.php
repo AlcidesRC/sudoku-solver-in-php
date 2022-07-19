@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-use App\Exceptions\WrongSchemaException;
+use App\Exceptions\WrongSchema;
 
-abstract class AbstractSudoku
+abstract class Sudoku
 {
     public const EMPTY_CELL_VALUE = 0;
     public const EMPTY_CELL_VALUE_PLACEHOLDER = '_';
@@ -31,7 +33,7 @@ abstract class AbstractSudoku
         foreach ($this->map as $y => $row) {
             $index = array_search(self::EMPTY_CELL_VALUE, $row, true);
 
-            if (false !== $index) {
+            if ($index !== false) {
                 return [$y, $index];
             }
         }
@@ -71,7 +73,7 @@ abstract class AbstractSudoku
      */
     protected function getColValues(int $x): array
     {
-        return array_map(function ($entry) use ($x) {
+        return array_map(static function ($entry) use ($x) {
             return $entry[$x];
         }, $this->map);
     }
@@ -81,7 +83,7 @@ abstract class AbstractSudoku
      */
     protected function getQuadrantValues(int $y, int $x): array
     {
-        $getQuadrantLimits = function (int $index): array {
+        $getQuadrantLimits = static function (int $index): array {
             $current = floor($index / self::TOTAL_QUADRANTS_PER_ROW);
             return self::QUADRANTS_RANGES[$current];
         };
@@ -111,9 +113,6 @@ abstract class AbstractSudoku
         return array_values(array_diff(self::VALID_CANDIDATES, $used));
     }
 
-    /**
-     * @return int
-     */
     protected function getRandomCandidate(int $y, int $x): int
     {
         $candidates = $this->getCandidates($y, $x);
@@ -130,18 +129,18 @@ abstract class AbstractSudoku
     {
         $validContents = [...self::VALID_CANDIDATES, self::EMPTY_CELL_VALUE];
 
-        if (self::AXIS_TOTAL_CELLS !== \count($map)) {
-            throw new WrongSchemaException();
+        if (\count($map) !== self::AXIS_TOTAL_CELLS) {
+            throw new WrongSchema();
         }
 
-        foreach ($map as $y => $row) {
-            if (self::AXIS_TOTAL_CELLS !== \count($row)) {
-                throw new WrongSchemaException();
+        foreach ($map as $row) {
+            if (\count($row) !== self::AXIS_TOTAL_CELLS) {
+                throw new WrongSchema();
             }
 
-            foreach ($row as $x => $value) {
-                if (false === array_search($value, $validContents, true)) {
-                    throw new WrongSchemaException();
+            foreach ($row as $value) {
+                if (array_search($value, $validContents, true) === false) {
+                    throw new WrongSchema();
                 }
             }
         }

@@ -2,8 +2,8 @@
 
 namespace UnitTests;
 
-use App\Exceptions\CannotBeSolvedException;
-use App\Exceptions\WrongSchemaException;
+use App\Exceptions\CannotBeSolved;
+use App\Exceptions\WrongSchema;
 use App\SudokuSolver;
 use PHPUnit\Framework\TestCase;
 
@@ -76,7 +76,7 @@ final class SudokuSolverTest extends TestCase
     /**
      * @param array<int, array<int, int>> $map
      *
-     * @covers \App\Exceptions\WrongSchemaException::__construct
+     * @covers \App\Exceptions\WrongSchema::__construct
      * @covers \App\SudokuSolver::checkSchema
      * @covers \App\SudokuSolver::__invoke
      *
@@ -84,7 +84,7 @@ final class SudokuSolverTest extends TestCase
      */
     public function testThrowExceptionWithWrongSchema(array $map): void
     {
-        $this->expectException(WrongSchemaException::class);
+        $this->expectException(WrongSchema::class);
 
         (new SudokuSolver())($map);
     }
@@ -204,7 +204,7 @@ final class SudokuSolverTest extends TestCase
     /**
      * @param array<int, array<int, int>> $map
      *
-     * @covers \App\Exceptions\CannotBeSolvedException::__construct
+     * @covers \App\Exceptions\CannotBeSolved::__construct
      * @covers \App\SudokuSolver::pickFirstEmptyCell
      * @covers \App\SudokuSolver::checkSchema
      * @covers \App\SudokuSolver::getCandidates
@@ -218,7 +218,7 @@ final class SudokuSolverTest extends TestCase
      */
     public function testThrowExceptionWithWrongContents(array $map): void
     {
-        $this->expectException(CannotBeSolvedException::class);
+        $this->expectException(CannotBeSolved::class);
 
         (new SudokuSolver())($map);
     }

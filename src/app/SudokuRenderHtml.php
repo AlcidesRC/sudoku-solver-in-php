@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-final class SudokuRenderHtml extends AbstractSudokuRender
+final class SudokuRenderHtml extends SudokuRender
 {
     private const REPLACEMENTS = [
         'CA' => '<span style="color: lightgreen">',

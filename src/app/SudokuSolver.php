@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-use App\Exceptions\CannotBeSolvedException;
+use App\Exceptions\CannotBeSolved;
 
-final class SudokuSolver extends AbstractSudoku
+final class SudokuSolver extends Sudoku
 {
     /**
      * @param array<int, array<int, int|string>> $map
@@ -17,8 +19,8 @@ final class SudokuSolver extends AbstractSudoku
 
         $this->map = $map;
 
-        if (!$this->solveRecursively()) {
-            throw new CannotBeSolvedException();
+        if ( ! $this->solveRecursively()) {
+            throw new CannotBeSolved();
         }
 
         return $this->map;
@@ -28,7 +30,7 @@ final class SudokuSolver extends AbstractSudoku
     {
         [$y, $x] = $this->pickFirstEmptyCell();
 
-        $isValidCell = !is_null($y) && !is_null($x);
+        $isValidCell = ! is_null($y) && ! is_null($x);
 
         if ($isValidCell) {
             foreach ($this->getCandidates($y, $x) as $candidate) {

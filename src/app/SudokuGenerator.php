@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-final class SudokuGenerator extends AbstractSudoku
+final class SudokuGenerator extends Sudoku
 {
     /**
      * @return array<int, array<int, int|string>>
@@ -31,8 +33,8 @@ final class SudokuGenerator extends AbstractSudoku
             do {
                 [$y, $x] = $this->pickRandomEmptyCell();
 
-                $isValidCell = !is_null($y) && !is_null($x);
-            } while (!$isValidCell);
+                $isValidCell = ! is_null($y) && ! is_null($x);
+            } while ( ! $isValidCell);
 
             $this->map[$y][$x] = $this->getRandomCandidate($y, $x);
         }

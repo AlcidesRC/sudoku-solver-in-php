@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-final class SudokuRenderCli extends AbstractSudokuRender
+final class SudokuRenderCli extends SudokuRender
 {
     private const REPLACEMENTS = [
         'CA' => "\033[1;32m",

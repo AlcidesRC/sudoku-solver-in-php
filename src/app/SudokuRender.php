@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-abstract class AbstractSudokuRender extends AbstractSudoku
+abstract class SudokuRender extends Sudoku
 {
     protected const TEMPLATE = [
         '┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓',

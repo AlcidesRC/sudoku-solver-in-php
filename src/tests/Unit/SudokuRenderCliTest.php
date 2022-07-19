@@ -2,7 +2,7 @@
 
 namespace UnitTests;
 
-use App\Exceptions\WrongSchemaException;
+use App\Exceptions\WrongSchema;
 use App\SudokuRenderCli;
 use PHPUnit\Framework\TestCase;
 
@@ -17,11 +17,11 @@ final class SudokuRenderCliTest extends TestCase
      * @param array<int, array<int, int>> $map
      *
      * @covers \App\SudokuRenderCli::__invoke
-     * @covers \App\AbstractSudokuRender::__invoke
+     * @covers \App\SudokuRender::__invoke
      * @covers \App\SudokuRenderCli::checkSchema
      * @covers \App\SudokuRenderCli::getTemplate
-     * @covers \App\AbstractSudokuRender::getTemplate
-     * @covers \App\AbstractSudokuRender::getValuesReplacements
+     * @covers \App\SudokuRender::getTemplate
+     * @covers \App\SudokuRender::getValuesReplacements
      *
      * @dataProvider dataProviderSudokuSolved
      */
@@ -78,16 +78,16 @@ final class SudokuRenderCliTest extends TestCase
     /**
      * @param array<int, array<int, int>> $map
      *
-     * @covers \App\Exceptions\WrongSchemaException::__construct
+     * @covers \App\Exceptions\WrongSchema::__construct
      * @covers \App\SudokuRenderCli::__invoke
-     * @covers \App\AbstractSudokuRender::__invoke
+     * @covers \App\SudokuRender::__invoke
      * @covers \App\SudokuRenderCli::checkSchema
      *
      * @dataProvider dataProviderSudokuThrowExceptionWithWrongSchema
      */
     public function testThrowExceptionWithWrongSchema(array $map): void
     {
-        $this->expectException(WrongSchemaException::class);
+        $this->expectException(WrongSchema::class);
 
         (new SudokuRenderCli())($map);
     }
