@@ -1,109 +1,108 @@
-# Resolviendo sudokus con PHP
+# Solving sudokus with PHP
 
-> Demostración de cómo resolver sudokus con PHP
+> Demostration
 
 [TOC]
 
-## Qué son los sudokus
+## What are sudokus?
 
-Los sudokus son pasatiempos que consisten en completar con números del 1 al 9 una cuadrícula de 81 casillas y 9 subcuadrículas, de forma que no se repita ningún número en la misma fila o columna ni en la misma subcuadrícula.
+In its simplest and most common configuration, sudoku puzzles consists of a 9×9 grid with numbers appearing in some of the squares. The object of the puzzle is to fill the remaining squares, using all the numbers 1-9 exactly once in each row, column, and the nine 3×3 subgrids. Sudoku is based entirely on logic, without any arithmetic involved, and the level of difficulty is determined by the quantity and positions of the original numbers. The puzzle, however, raised interesting combinatorial problems for mathematicians, two of whom proved in 2005 that there are 6,670,903,752,021,072,936,960 possible sudoku grids.
 
-### Reglas de los sudokus
+### Sudoku rules
 
-- La cuadrícula del sudoku tiene 9x9 celdas.
-- Solo puedes usar los números del 1 al 9.
-- Cada bloque o cuadrante de 3x3 solo puede contener números del 1 al 9.
-- Cada columna vertical solo puede contener números del 1 al 9.
-- Cada fila horizontal solo puede contener números del 1 al 9.
-- Cada número de un cuadrante de 3x3, de una columna o de una fila solo puede usarse una vez.
-- Un sudoku sólo puede tener una única solución.
-- La partida acaba cuando se completa toda la cuadrícula del sudoku.
+- Sudoku grid consists of 9x9 spaces.
+- You can use only numbers from 1 to 9.
+- Each 3×3 block can only contain numbers from 1 to 9.
+- Each vertical column can only contain numbers from 1 to 9.
+- Each horizontal row can only contain numbers from 1 to 9.
+- Each number in the 3×3 block, vertical column or horizontal row can be used only once.
+- The game is over when the whole Sudoku grid is correctly filled with numbers.
 
-## Sobre esta aplicación
+## About this application
 
-Esta aplicación permite resolver sudokus mediante una implementación con PHP y que permite mostrar la solución del mismo directamente en la terminal de línea de comandos, así como en una página HTML mediante una petición HTTP.
+This application solves sudoku puzzles using PHP via CLI or HTTP request.
 
-> Esta aplicación está basada en [Simple sudoku solver](https://jsbin.com/sohudezihi/edit?js,output), una implementación con Javascript escrita por [Andrei Kashcha](https://twitter.com/anvaka) y vista en la entrada [Programa JS para resolver sudokus](https://www.microsiervos.com/archivo/ordenadores/programa-javascript-resolver-sudokus.html) de [Microsiervos](https://microsiervos.com).
+> This implementation is based on [Simple sudoku solver](https://jsbin.com/sohudezihi/edit?js,output), a Javascript implementation by [Andrei Kashcha](https://twitter.com/anvaka) and published at [Programa JS para resolver sudokus](https://www.microsiervos.com/archivo/ordenadores/programa-javascript-resolver-sudokus.html) from [Microsiervos](https://microsiervos.com).
 
-> A diferencia de la implementación con Javascript, la elección de los números candidatos para analizar cada opción **no se obtienen por fuerza bruta** sino que se analiza cada fila, columna y cuadrante para calcular las posibles opciones correctas; reduciendo así la complejidad algorítmica y optimizando los tiempos de respuesta al eliminar todas aquellas combinaciones con números que atentan contra las reglas del sudoku.
+> This application differs from original implementation on the way candidate numbers are elected: in the original implementation those numbers **are calculated by brute force** on this implementation the candidates election takes care about previously elected in a row, column and subgrid.
 
-Esta aplicación podrá dar como resultado:
+This application can:
 
-- Una excepción de tipo `WrongSchemaException` si el mapa de entrada no cumple con el tamaño correcto o bien, contiene símbolos no permitidos.
+- Launch a `WrongSchemaException` exception the size is not 9×9 or not containing numbers from 1 to 9.
 
-O bien,
+Or...
 
-- Una excepción de tipo `CannotBeSolvedException` si el mapa de entrada no cumple con las reglas de los sudokus. Por ejemplo, cuando se introducen números repetidos en la misma fila, columna o área y, por tanto, es imposible de resolver el sudoku.
+- Launch a `CannotBeSolvedException` exception if the initial sudoku doesn't follow the previously described rules. For example when a number is repeated on the same row, column or subgrid so sudoku puzzle cannot be solved.
 
-O bien,
+Or...
 
-- La solución del sudoku.
+- The desired solution.
 
-Hay dos modos de usar la aplicación:
+There are tow ways to execute the application:
 
 ### Command Line Interface (CLI)
 
-En [`./cli/example.php`](https://github.com/AlcidesRC/sudoku-solver-in-php/blob/main/src/cli/example.php) se encuentra un ejemplo de uso mediante la interfaz de línea de comandos.
+In [`./cli/example.php`](https://github.com/AlcidesRC/sudoku-solver-in-php/blob/main/src/cli/example.php) you can find a CLI example.
 
-#### Ejecutar el ejemplo
+#### Executing the example
 
 ```bash
 demos-sudoku$ make example-cli
 ```
 
-##### Resultado
+##### Result
 
-|  Entrada                         | Resultado                      |
+|  Input                           | Output                         |
 |:--------------------------------:|:------------------------------:|
 | ![thumb](./screenshot-input.png) | ![thumb](./screenshot-cli.png) |
 
 ### HTML
 
-De manera análoga, en [`./public/index.php`](https://github.com/AlcidesRC/sudoku-solver-in-php/blob/main/src/public/index.php) se encuentra un ejemplo de uso mediante HTTP.
+In [`./public/index.php`](https://github.com/AlcidesRC/sudoku-solver-in-php/blob/main/src/public/index.php) you can find a HTTP example.
 
-#### Ejecutar el ejemplo
+#### Executing the example
 
 ```bash
 demo-sudoku$ make example-html
 ```
 
-##### Resultado
+##### Result
 
-|  Entrada                         | Resultado                       |
+|  Input                           | Output                         |
 |:--------------------------------:|:-------------------------------:|
 | ![thumb](./screenshot-input.png) | ![thumb](./screenshot-html.png) |
 
-## Construído con
+## Built with
 
-* [Docker](https://www.docker.com/) - La manera más rápida de crear aplicaciones en contenedores.
-* [nginx](https://www.nginx.com/) - Servidor web, balanceador de carga avanzado y reverse proxy todo en uno.
-* [PHP-FPM](https://www.php.net/) - Lenguaje de programación generalista que está especialmente diseñado para el desarrollo web.
-* Make - Utilidad make GNU para mantener grupos de programas.
+* [Docker](https://www.docker.com/) - Docker is an open platform for developing, shipping, and running applications.
+* [nginx](https://www.nginx.com/) - Advanced Load Balancer, Web Server & Reverse Proxy.
+* [PHP-FPM](https://www.php.net/) - FPM (FastCGI Process Manager) is a primary PHP FastCGI implementation containing some features (mostly) useful for heavy-loaded sites.
+* [Make](https://www.gnu.org/software/make/) - GNU Make is a tool which controls the generation of executables and other non-source files of a program from the program's source files.
 
-## Requisitos
+## Requirements
 
 - Docker
 - Git
-- Navegador web (para el ejemplo en HTML)
+- Web browser (if you want to see the HTML example)
 
-## Consideraciones
+## Assumptions
 
-Para simplificar la puesta en marcha, la aplicación responde por defecto al endpoint `http://localhost`
+To simplify the setup process, nginx is attending requests from `http://localhost`
 
-## Instalación
+## Installation
 
-Para instalar esta aplicación basta con clonar el proyecto en local:
+To install this application just clone the repository into your local machine:
 
 ```bash
 $ cd ~ && mkdir -p demos/sudoku-solver-in-php
 ~demos/sudoku-solver-in-php$ git clone https://github.com/AlcidesRC/sudoku-solver-in-php
 ```
 
-## Uso
+## Usage
 
-La aplicación cuenta con un Makefile que contiene todos los comandos útiles para su puesta en marcha:
+This repository contains a Makefile with frequent commands used to interact with the application:
 
-### Comandos disponibles
+### Available commands
 
 ```bash
 ~demos/sudoku-solver-in-php$ make
@@ -133,65 +132,65 @@ La aplicación cuenta con un Makefile que contiene todos los comandos útiles pa
 · html                           Executes the example via HTTP
 ```
 
-### Construcción del servicio
+### Building the service
 
 ```bash
 ~demos/sudoku-solver-in-php$ make build
 ```
 
-### Iniciando el servicio
+### Starting the service
 
 ```bash
 ~demos/sudoku-solver-in-php$ make up
 ```
 
-### Instalando las dependencias
+### Installing PHP dependencies
 
 ```bash
 ~demos/sudoku-solver-in-php$ make composer-install
 ```
 
-### Accediendo al servicio mediante Bash
+### Stablishing a SSH shell to main service
 
 ```bash
 ~demos/sudoku-solver-in-php$ make bash
 ```
 
-### Análisis de Calidad (Quality Assurance)
-
-Este comando ejecuta las siguientes herramientas:
-
-- PHP Linter
-- PHP Coding Standards Fixer (PHP-CS-Fixer)
-- PHP Static Analyser (PHPStan)
+### Quality Assurance
 
 ```bash
 ~demos/sudoku-solver-in-php$ make qa
 ```
 
-### Ejecución de baterías de pruebas
+This command is an alias that allows to execute the following tools:
 
-Este comando ejecuta las siguientes herramientas:
+- PHP Linter
+- PHP Coding Standards Fixer (PHP-CS-Fixer)
+- PHP Static Analyser (PHPStan)
 
-- PHP Unit
-- PHP Coverage (PHPCOV)
-- Infection
+### Running the test suite
 
 ```bash
 ~demos/sudoku-solver-in-php$ make tests
 ```
 
-> El informe de cobertura de código se encuentra en `./coverage/html/index.html`
+This command is an alias that allows to execute the following tools:
 
-### Generación de métricas
+- PHP Unit
+- PHP Coverage (PHPCOV)
+- Infection
+
+> The coverage report will be generated in `./coverage/html/index.html`
+
+### Generating some metrics
 
 ```bash
 ~demos/sudoku-solver-in-php$ make metrics
 ```
 
-> El informe de métricas se encuentra en `./metrics/index.html`
+> The metrics report will be generated in `./metrics/index.html`
 
-### Parando el servicio
+### Stopping the service
 
 ```bash
 ~demos/sudoku-solver-in-php$ make down
