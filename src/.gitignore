@@ -1,7 +1,4 @@
 /vendor
-/.phpunit.cache/
-/.phpunit.cache.coverage/
-/.php-cs-fixer.cache
-/coverage
-/metrics
-/infection.log
+/.cache/
+/.logs/
+/.reports/

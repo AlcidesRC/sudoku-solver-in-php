@@ -4,11 +4,12 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->ignoreDotFiles(true)
     ->exclude([
-        './vendor/',
-        './coverage/',
-        './metrics/',
+        './.cache',
+        './.logs',
+        './.reports',
+        './vendor',
     ])
-    ->name('.php-cs-fixer.php')
+    ->name('./cache/.php-cs-fixer.php')
 ;
 
 $config = new PhpCsFixer\Config();
@@ -41,7 +42,7 @@ return $config->setRules([
         'no_unused_imports' => true,
         'no_whitespace_before_comma_in_array' => true,
         'no_whitespace_in_blank_line' => true,
-        'not_operator_with_space' => false,
+        'not_operator_with_space' => true,
         'object_operator_without_whitespace' => true,
         'ordered_class_elements' => true,
         'ordered_imports' => ['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha'],

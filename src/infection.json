@@ -3,14 +3,19 @@
     "source": {
         "directories": [
             "app",
+            "tests",
             "cli",
             "public"
         ]
     },
     "logs": {
-        "text": "infection.log"
+        "text": "./.logs/infection.log",
+        "html": "./.logs/infection.html",
+        "summary": "./.logs/infection-summary.log",
+        "json": "./.logs/infection-log.json",
+        "perMutator": "./.logs/infection-per-mutator.md"
     },
-    "timeout": 300,
+    "timeout": 60,
     "phpUnit": {
         "configDir": "."
     },
