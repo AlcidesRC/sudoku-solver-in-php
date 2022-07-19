@@ -19,11 +19,11 @@ final class SudokuSolver extends Sudoku
 
         $this->map = $map;
 
-        if ( ! $this->solveRecursively()) {
-            throw new CannotBeSolved();
+        if ($this->solveRecursively()) {
+            return $this->map;
         }
 
-        return $this->map;
+        throw new CannotBeSolved();
     }
 
     private function solveRecursively(): bool

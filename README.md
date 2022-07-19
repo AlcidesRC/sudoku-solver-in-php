@@ -165,8 +165,8 @@ This repository contains a Makefile with frequent commands used to interact with
 This command is an alias that allows to execute the following tools:
 
 - PHP Linter
-- PHP Coding Standards Fixer (PHP-CS-Fixer)
 - PHP Static Analyser (PHPStan)
+- PHP Insights
 
 ### Running the test suite
 

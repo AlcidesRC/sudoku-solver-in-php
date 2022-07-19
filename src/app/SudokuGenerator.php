@@ -34,7 +34,7 @@ final class SudokuGenerator extends Sudoku
                 [$y, $x] = $this->pickRandomEmptyCell();
 
                 $isValidCell = ! is_null($y) && ! is_null($x);
-            } while ( ! $isValidCell);
+            } while (! $isValidCell);
 
             $this->map[$y][$x] = $this->getRandomCandidate($y, $x);
         }

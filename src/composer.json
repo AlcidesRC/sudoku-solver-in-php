@@ -16,8 +16,7 @@
         "source": "https://github.com/alcidesrc/sudoku-solver-in-php"
     },
     "require": {
-        "php": "^8.0",
-        "friendsofphp/php-cs-fixer": "^3.8"
+        "php": "^8.0"
     },
     "require-dev": {
         "brianium/paratest": "^6.5",

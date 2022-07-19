@@ -47,21 +47,20 @@ composer-install composer-update composer-require composer-require-dev composer-
 
 metrics-phpmetrics: CMD=./vendor/bin/phpmetrics --junit=./coverage/junit.xml --report-html=./metrics ./app
 qa-linter: CMD=./vendor/bin/parallel-lint -e php -j 10 --colors ./app ./tests
-qa-phpcsfixer: CMD=./vendor/bin/php-cs-fixer fix --using-cache=no --ansi
 qa-phpstan: CMD=./vendor/bin/phpstan analyse --level 9 --memory-limit 1G --ansi ./app ./tests
 qa-phpinsights: CMD=./vendor/bin/phpinsights --fix
 tests-infection: CMD=./vendor/bin/infection --configuration=infection.json --threads=3 --coverage=./.reports/coverage --ansi
 tests-paratest: CMD=php -d pcov.enabled=1 vendor/bin/paratest --passthru-php="'-d' 'pcov.enabled=1'" --coverage-text --coverage-xml=./.reports/coverage/xml --coverage-html=./.reports/coverage/html --log-junit=./.reports/coverage/junit.xml
 tests-phpunit: CMD=./vendor/bin/phpunit --coverage-text --coverage-xml=./.reports/coverage/xml --coverage-html=./.reports/coverage/html --log-junit=./.reports/coverage/junit.xml --coverage-cache .cache/coverage
 
-bash qa-linter qa-phpstan qa-phpcsfixer qa-phpinsights tests-phpunit tests-paratest tests-infection metrics-phpmetrics:
+bash qa-linter qa-phpstan qa-phpinsights tests-phpunit tests-paratest tests-infection metrics-phpmetrics:
 	${DOCKER_COMPOSE_EXEC} ${CMD}
 	@echo ""
 
 # SHORTCUTS
 
 metrics: metrics-phpmetrics ## Generates a report with some metrics
-qa: qa-linter qa-phpcsfixer qa-phpstan qa-phpinsights ## Checks the source code
+qa: qa-linter qa-phpstan qa-phpinsights ## Checks the source code
 tests: tests-paratest tests-infection ## Runs the Tests Suites
 
 # MISCELANEOUS
